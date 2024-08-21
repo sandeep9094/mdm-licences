@@ -9,4 +9,6 @@ interface UserRepository {
 
     suspend fun getUserById(id: String): UserResponse?
 
+    fun getUserByUserName(username: String): UserResponse?
+
 }

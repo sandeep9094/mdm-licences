@@ -39,4 +39,11 @@ class UserService(
     }
 
 
+    override fun getUserByUserName(username: String): UserResponse? {
+//        val user = userCollection.find(Filters.eq("firstName", ObjectId(username))).firstOrNull() ?: return null
+//        return user.toResponse()
+        return null
+    }
+
+
 }
