@@ -4,8 +4,8 @@ import developidea.com.application.request.AuthUserRequest
 import developidea.com.application.request.CreateUserRequest
 import developidea.com.application.response.AuthUserResponse
 import developidea.com.application.response.UserResponse
-import developidea.com.domain.model.GenericErrorResponse
-import developidea.com.domain.model.GenericResponse
+import developidea.com.domain.model.local.GenericErrorResponse
+import developidea.com.domain.model.local.GenericResponse
 import developidea.com.domain.repository.UserRepository
 import developidea.com.service.JwtService
 import developidea.com.utils.encryptPassword

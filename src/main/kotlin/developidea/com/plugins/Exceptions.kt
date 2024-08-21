@@ -1,8 +1,8 @@
 package developidea.com.plugins
 
-import developidea.com.domain.model.GenericErrorResponse
-import developidea.com.domain.model.ParsingException
-import developidea.com.domain.model.ValidationException
+import developidea.com.domain.model.local.GenericErrorResponse
+import developidea.com.domain.model.local.ParsingException
+import developidea.com.domain.model.local.ValidationException
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
