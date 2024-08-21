@@ -18,11 +18,11 @@ data class CreateUserRequest(
 
     fun toDbUser(): DbUser {
         if (firstName.isEmpty()) {
-            throw ValidationException("firstName field cannot be empty!")
+            throw IllegalStateException("firstName field cannot be empty!")
         }
 
         if (lastName.isEmpty()) {
-            throw ValidationException("lastName field cannot be empty!")
+            throw IllegalStateException("lastName field cannot be empty!")
         }
 
         if (!email.isEmailValid()) {
@@ -35,9 +35,9 @@ data class CreateUserRequest(
 
         return DbUser(
             ObjectId(),
-            firstName,
-            lastName,
-            email,
+            firstName.trim(),
+            lastName.trim(),
+            email.trim(),
             password.encryptPassword()
         )
     }

@@ -21,8 +21,8 @@ class JwtService(
     private val audience = getConfigProperty("jwt.audience")
     private val issuer = getConfigProperty("jwt.issuer")
     private val secret = getConfigProperty("jwt.secret")
-
     val realm = getConfigProperty("jwt.realm")
+
     val jwtVerifier: JWTVerifier =
         JWT.require(Algorithm.HMAC256(secret)).withIssuer(issuer).withAudience(audience).build()
 
@@ -38,11 +38,9 @@ class JwtService(
         .withExpiresAt(Date(System.currentTimeMillis() + expireIn))
         .sign(Algorithm.HMAC256(secret))
 
-    fun customValidator(credential: JWTCredential): JWTPrincipal? {
+    suspend fun customValidator(credential: JWTCredential): JWTPrincipal? {
         val userId = credential.payload.getClaim("userId").asString()
-        //TODO update with userId
-        userId?.let(userRepository::getUserByUserName) ?: return null
-
+        userRepository.getUserById(userId) ?: return null
         if(!audienceMatches(credential)){
             return null
         }

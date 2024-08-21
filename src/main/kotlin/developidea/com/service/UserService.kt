@@ -19,6 +19,14 @@ class UserService(
 
     private val userCollection = mongoDatabase.getCollection<DbUser>(USER_COLLECTION)
 
+    override suspend fun authenticateUser(email: String, passwordHash: String): UserResponse? {
+        val user = userCollection.find(Filters.eq("email", email)).firstOrNull() ?: return null
+        if (passwordHash != user.passwordHash) {
+            return null
+        }
+        return user.toResponse()
+    }
+
     override suspend fun createUser(user: DbUser): UserResponse {
         try {
             val isUserEmailExist = userCollection.find(Filters.eq("email", user.email)).firstOrNull()
@@ -37,13 +45,5 @@ class UserService(
         val user = userCollection.find(Filters.eq("_id", ObjectId(id))).firstOrNull() ?: return null
         return user.toResponse()
     }
-
-
-    override fun getUserByUserName(username: String): UserResponse? {
-//        val user = userCollection.find(Filters.eq("firstName", ObjectId(username))).firstOrNull() ?: return null
-//        return user.toResponse()
-        return null
-    }
-
 
 }
