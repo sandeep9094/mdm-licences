@@ -6,6 +6,7 @@ import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import developidea.com.application.response.UserResponse
 import developidea.com.domain.model.DbUser
 import developidea.com.domain.repository.UserRepository
+import developidea.com.plugins.DB_COLLECTION_USERS
 import kotlinx.coroutines.flow.firstOrNull
 import org.bson.types.ObjectId
 
@@ -13,11 +14,7 @@ class UserService(
     mongoDatabase: MongoDatabase
 ) : UserRepository {
 
-    companion object {
-        private const val USER_COLLECTION = "users"
-    }
-
-    private val userCollection = mongoDatabase.getCollection<DbUser>(USER_COLLECTION)
+    private val userCollection = mongoDatabase.getCollection<DbUser>(DB_COLLECTION_USERS)
 
     override suspend fun authenticateUser(email: String, passwordHash: String): UserResponse? {
         val user = userCollection.find(Filters.eq("email", email)).firstOrNull() ?: return null

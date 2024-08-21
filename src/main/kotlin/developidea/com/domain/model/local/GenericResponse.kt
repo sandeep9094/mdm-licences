@@ -1,4 +1,4 @@
-package developidea.com.domain.model
+package developidea.com.domain.model.local
 
 import kotlinx.serialization.Serializable
 

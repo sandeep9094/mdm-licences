@@ -4,7 +4,9 @@ import com.mongodb.ConnectionString
 import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoDatabase
+import developidea.com.domain.repository.LicenseRepository
 import developidea.com.domain.repository.UserRepository
+import developidea.com.service.LicenseService
 import developidea.com.service.UserService
 import io.ktor.server.application.*
 import io.ktor.server.config.*
@@ -12,11 +14,13 @@ import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
+const val DB_COLLECTION_USERS = "users"
+const val DB_COLLECTION_LICENSES = "licenses"
+
 fun Application.configureDatabase() {
     install(Koin) {
         slf4jLogger()
         modules(module {
-
             val username = environment.config.tryGetString("db.mongo.user")
             val password = environment.config.tryGetString("db.mongo.password")
             val host = environment.config.tryGetString("db.mongo.host") ?: "127.0.0.1"
@@ -32,6 +36,7 @@ fun Application.configureDatabase() {
             }
         }, module {
             single<UserRepository> { UserService(get()) }
+            single<LicenseRepository> { LicenseService(get()) }
         })
     }
 }

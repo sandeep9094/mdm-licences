@@ -1,7 +1,6 @@
 package developidea.com.application.request
 
 import developidea.com.domain.model.DbUser
-import developidea.com.domain.model.ValidationException
 import developidea.com.utils.encryptPassword
 import developidea.com.utils.isEmailValid
 import developidea.com.utils.isPasswordValid
