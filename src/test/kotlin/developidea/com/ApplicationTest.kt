@@ -1,4 +1,4 @@
-package example.com
+package developidea.com
 
 import example.com.plugins.*
 import io.ktor.client.request.*

@@ -1,5 +1,6 @@
-package example.com.plugins
+package developidea.com.plugins
 
+import developidea.com.application.routes.userRoute
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.response.*
@@ -10,9 +11,9 @@ fun Application.configureRouting() {
         get("/") {
             call.respondText("Hello World!")
         }
-        // Static plugin. Try to access `/static/index.html`
-        static("/static") {
-            resources("static")
+
+        route("/api/v1/user") {
+            userRoute()
         }
     }
 }

@@ -1,7 +1,8 @@
-package example.com
+package developidea.com
 
-import example.com.plugins.*
+import developidea.com.plugins.*
 import io.ktor.server.application.*
+
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
@@ -9,7 +10,9 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     configureSerialization()
-    configureHTTP()
     configureSecurity()
+    configureExceptions()
+    configureDatabase()
     configureRouting()
+    configureSwaggerUI()
 }
