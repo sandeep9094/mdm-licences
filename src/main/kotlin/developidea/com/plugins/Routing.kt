@@ -7,10 +7,12 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 fun Application.configureRouting(
-    jwtService: JwtService
 ) {
+    val jwtService by inject<JwtService>()
+
     routing {
         get("/") {
             call.respondText("Hello World!")

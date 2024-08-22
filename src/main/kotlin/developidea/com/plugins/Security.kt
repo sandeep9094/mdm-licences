@@ -1,16 +1,14 @@
 package developidea.com.plugins
 
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import developidea.com.service.JwtService
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.response.*
+import org.koin.ktor.ext.inject
 
 fun Application.configureSecurity(
-    jwtService: JwtService
 ) {
+    val jwtService by inject<JwtService>()
 
     authentication {
         jwt {
