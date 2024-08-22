@@ -23,7 +23,8 @@ data class MdmLicense(
         return LicenseResponse(
             id = id.toString(),
             key = key,
-            expiryTimestamp = expiryTimestamp
+            expiryTimestamp = expiryTimestamp,
+            device = device
         )
     }
 }

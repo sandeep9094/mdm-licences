@@ -1,7 +1,11 @@
 package developidea.com.service
 
+import com.mongodb.MongoException
 import com.mongodb.client.model.Filters
+import com.mongodb.client.model.UpdateOptions
+import com.mongodb.client.model.Updates
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
+import developidea.com.application.request.BindLicenseRequest
 import developidea.com.application.request.LicenseRequest
 import developidea.com.application.response.LicenseResponse
 import developidea.com.domain.model.DbUser
@@ -57,7 +61,30 @@ class LicenseService(
         return mdmLicense.toResponse()
     }
 
-    override suspend fun bindLicense(): LicenseResponse? {
-        return null
+    override suspend fun bindLicense(request: BindLicenseRequest): LicenseResponse? {
+        try {
+            val licenseQuery = Filters.eq("_id", ObjectId(request.licenseId))
+            val license = licenseCollection.find(licenseQuery).firstOrNull() ?: return null
+            if(license.key != request.licenseKey) {
+                return null
+            }
+
+            if(license.userId != request.userId) {
+                return null
+            }
+
+            val updates = Updates.combine(
+                Updates.set(MdmLicense::device.name, request.device),
+            )
+            val options = UpdateOptions().upsert(true)
+            val updatedModifiedCount = licenseCollection.updateOne(licenseQuery, updates, options)
+            if(updatedModifiedCount.modifiedCount == 0L) {
+                throw ValidationException("Failed to update data!")
+            }
+            val updatedLicense = licenseCollection.find(licenseQuery).firstOrNull() ?: return null
+            return updatedLicense.toResponse()
+        } catch (exception: MongoException) {
+            return null
+        }
     }
 }
