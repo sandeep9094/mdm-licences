@@ -12,6 +12,8 @@ jwt:
 
 db:
   mongo:
-    username: $mongoUsername
+    user: $mongoUser
     password: $mongoPassword
     host: $mongoHost
+    database:
+      name: $mongoDatabaseName
