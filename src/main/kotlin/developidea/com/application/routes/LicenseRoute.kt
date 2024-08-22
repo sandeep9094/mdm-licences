@@ -1,5 +1,6 @@
 package developidea.com.application.routes
 
+import developidea.com.application.request.BindLicenseRequest
 import developidea.com.application.request.LicenseRequest
 import developidea.com.domain.model.local.GenericErrorResponse
 import developidea.com.domain.model.local.GenericResponse
@@ -17,10 +18,16 @@ fun Route.licenseRoute() {
 
     post("/generate") {
         val licenseRequest = call.receive<LicenseRequest>()
-        val mdmLicense = licenseRepository.generateLicense(licenseRequest)
-        call.respond(HttpStatusCode.OK, message = GenericResponse(data = mdmLicense))
+        val license = licenseRepository.generateLicense(licenseRequest)
+        call.respond(HttpStatusCode.OK, message = GenericResponse(data = license))
     }
 
     post("/bind") {
+        val bindLicenseRequest = call.receive<BindLicenseRequest>()
+        val license = licenseRepository.bindLicense(bindLicenseRequest) ?: return@post call.respond(
+            HttpStatusCode.BadRequest,
+            GenericErrorResponse(message = "Invalid request payload")
+        )
+        call.respond(HttpStatusCode.OK, message = GenericResponse(data = license))
     }
 }

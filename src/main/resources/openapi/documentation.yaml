@@ -1,23 +1,185 @@
-openapi: "3.0.3"
+openapi: 3.0.3
 info:
-  title: "Application API"
-  description: "Application API"
-  version: "1.0.0"
+  title: Ktor Swagger Example - OpenAPI
+  version: 1.0.0
 servers:
-  - url: "http://0.0.0.0:8080"
+  - url: http://127.0.0.1:8080/api/v1
+tags:
+  - name: user
+    description: Operations about user
+  - name: license
+    description: License releated api's
 paths:
-  /:
+  /user:
+    summary: User Controller
+    description: User releated api's
+  /user/register:
     get:
-      description: "Hello World!"
+      tags:
+        - user
+      summary: New User Registration
+      description: ''
+      operationId: loginUser
       responses:
-        "200":
-          description: "OK"
+        '200':
+          description: successful operation
           content:
-            text/plain:
-              schema:
-                type: "string"
+            application/json:
               examples:
-                Example#1:
-                  value: "Hello World!"
+                RegisterUserResponse:
+                  value: |-
+                    {
+                        "status": true,
+                        "message": "User created Successfully",
+                        "data": {
+                            "id": "66c71d7ccd7e64379a2a2220",
+                            "firstName": "Test",
+                            "lastName": "User",
+                            "emailId": "test1234@gmail.com"
+                        }
+                    }
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: failed operation
+          content:
+            application/json:
+              examples:
+                RegisterUserFailedResponse:
+                  value: |-
+                    {
+                        "status": false,
+                        "message": "User Email-Id already exist!",
+                        "data": null
+                    }
+  /user/authenticate:
+    get:
+      tags:
+        - user
+      summary: Authenticate user into the system
+      description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              examples:
+                LoginResponse:
+                  value: |-
+                    {
+                        "status": true,
+                        "message": "Success",
+                        "data": {
+                            "token": "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcyNDMyNTU2MiwiaWF0IjoxNzI0MzI1NTYyfQ.sPqjQTrxe6yJcvXJCK_hHeIHaiZq8sXYFa8SkowSK64",
+                            "user": {
+                                "id": "66c60345c0e73c73a531220c",
+                                "firstName": "Test",
+                                "lastName": "User",
+                                "emailId": "test1234@gmail.com"
+                            }
+                        }
+                    }
+        '400':
+          description: Invalid username/password supplied
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: Get user by user id
+      description: ''
+      operationId: getUserByName
+      parameters:
+        - name: id
+          in: path
+          description: User Object Id.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              examples:
+                RegisterUserResponse:
+                  value: |-
+                    {
+                        "status": true,
+                        "message": "Success",
+                        "data": {
+                            "id": "66c71d7ccd7e64379a2a2220",
+                            "firstName": "Test",
+                            "lastName": "User",
+                            "emailId": "test1234@gmail.com"
+                        }
+                    }
+        '400':
+          description: Invalid user-id supplied
+          content:
+            application/json:
+              examples:
+                FaileResponse:
+                  value: |-
+                    {
+                        "status": false,
+                        "message": "User not found, Invalid userId!",
+                        "data": null
+                    }
+  /license:
+    summary: License Controller
+    description: ''
+  /license/generate:
+    post:
+      tags:
+        - license
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: OK
+  /license/bind:
+    post:
+      tags:
+        - license
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: OK
 components:
-  schemas: {}
+  schemas:
+    CreateUserRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+      xml:
+        name: user
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66c622ba7e12e5072ba1994d
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+      xml:
+        name: userResponse
