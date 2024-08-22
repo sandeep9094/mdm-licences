@@ -4,6 +4,7 @@ import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import developidea.com.domain.repository.LicenseRepository
 import developidea.com.domain.repository.UserRepository
+import developidea.com.service.JwtService
 import developidea.com.service.LicenseService
 import developidea.com.service.UserService
 import io.ktor.server.application.*
@@ -26,6 +27,7 @@ fun Application.configureDatabase() {
         }, module {
             single<UserRepository> { UserService(get()) }
             single<LicenseRepository> { LicenseService(get()) }
+            single<JwtService> { JwtService(this@configureDatabase, get()) }
         })
     }
 }
