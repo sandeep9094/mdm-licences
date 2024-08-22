@@ -13,9 +13,16 @@ version = "0.0.1"
 
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
+    mainClass.set("developidea.com.ApplicationKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
+}
+
+ktor {
+    fatJar {
+        archiveFileName.set("mdm-licenses-ktor.jar")
+    }
 }
 
 repositories {
@@ -41,6 +48,9 @@ dependencies {
     //Koin Dependency Injection
     implementation("io.insert-koin:koin-ktor:3.5.3")
     implementation("io.insert-koin:koin-logger-slf4j:3.5.3")
+
+    //Ktor envrionment config
+    implementation("de.sharpmind.ktor:ktor-env-config:2.1.0")
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
