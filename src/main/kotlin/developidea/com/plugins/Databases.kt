@@ -37,8 +37,9 @@ fun Application.connectToMongoDB(): MongoDatabase {
     val user = environment.config.tryGetString("db.mongo.user")
     val password = environment.config.tryGetString("db.mongo.password")
     val host = environment.config.tryGetString("db.mongo.host") ?: "127.0.0.1"
+    val port = environment.config.tryGetString("db.mongo.port") ?: "27017"
     val databaseName = environment.config.tryGetString("db.mongo.database.name") ?: "mdm-licenses"
-    val connectionString = "mongodb+srv://$user:$password@$host/?retryWrites=true&w=majority&appName=licenses"
+    val connectionString = "mongodb://$user:$password@$host:$port/?retryWrites=true&w=majority&appName=licenses"
     val mongoClient = MongoClient.create(connectionString)
     val database = mongoClient.getDatabase(databaseName)
     environment.monitor.subscribe(ApplicationStopped) {
